@@ -53,7 +53,7 @@ function Header() {
             {/* Primary */}
             <Link
               to="/login"
-              className="px-8 py-3 bg-gradient-to-r from-purple-500 to-purple-700 cursor-pointer
+              className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
                 rounded-xl font-semibold text-white shadow-lg 
                 hover:from-purple-600 hover:to-purple-800
                 hover:shadow-purple-500/40
@@ -112,7 +112,7 @@ function Header() {
         ref={sidebarRef}
         className="
           fixed top-0 left-0 h-full w-72
-          bg-purple-900 text-white
+          bg-[#0b0f19] text-white
           shadow-2xl
           transform -translate-x-full 
           z-50
@@ -125,6 +125,45 @@ function Header() {
               <X size={40} />
             </button>
           </div>
+
+          <div className="space-y-5 px-5">
+            {/* Primary */}
+            <Link
+              to="/login"
+              className=" p-3  bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
+                rounded-xl font-semibold text-white shadow-lg 
+                hover:from-purple-600 hover:to-purple-800
+                hover:shadow-purple-500/40
+                hover:pr-6
+                transition-all duration-300
+                flex items-center justify-center overflow-hidden group"
+            >
+              Login
+              <span className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300">
+                →
+              </span>
+            </Link>
+
+            <Link
+              to="/register"
+              className="p-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
+                rounded-xl font-semibold text-white shadow-lg 
+                hover:from-purple-600 hover:to-purple-800
+                hover:shadow-purple-500/40
+                hover:pr-6
+                transition-all duration-300
+                flex items-center justify-center overflow-hidden group"
+            >
+              Register
+
+              <span className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300">
+                →
+              </span>
+            </Link>
+          </div>
+
+
+
         </div>
 
       </div>

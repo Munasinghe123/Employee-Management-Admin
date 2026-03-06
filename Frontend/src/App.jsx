@@ -13,7 +13,7 @@ function App() {
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
 
-        <Header />
+        {location.pathname !== '/dashboard' && <Header />}
 
         {/* Page Content */}
         <main className="flex-1 flex flex-col">
@@ -23,11 +23,12 @@ function App() {
             <Route path='/register' element={<Register />} />
 
             {/* protected */}
-            <Route path='/dashboard' element={<Dashboard/>}/>
+            <Route path='/dashboard' element={<Dashboard />} />
           </Routes>
         </main>
 
-        <Footer />
+        {location.pathname !== '/dashboard' && <Footer />}
+
 
       </div>
     </BrowserRouter>

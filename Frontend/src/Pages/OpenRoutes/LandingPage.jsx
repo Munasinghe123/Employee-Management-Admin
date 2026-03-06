@@ -9,23 +9,23 @@ import gsap from "gsap"
 function LandingPage() {
 
   useEffect(() => {
-  // only animate on desktop
-  if (window.innerWidth >= 1024) {
-    gsap.fromTo(
-      ".laptop",
-      { y: -30 },
-      { y: 30, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" }
-    )
-  }
-}, [])
+    // only animate on desktop
+    if (window.innerWidth >= 1024) {
+      gsap.fromTo(
+        ".laptop",
+        { y: -30 },
+        { y: 30, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" }
+      )
+    }
+  }, [])
 
   return (
     <section className="relative flex-1 flex items-center justify-center bg-[#0b0f19] text-white overflow-hidden">
 
       <div className="grid grid-cols-1 lg:grid-cols-2 z-20 items-center justify-center  px-8 lg:px-20">
-     
+
         {/* LEFT SIDE */}
-        <div className="relative space-y-6 max-w-xl mt-10">
+        <div className="relative max-w-xl mt-10">
 
           {/* Sine wave background */}
           <svg
@@ -50,35 +50,30 @@ function LandingPage() {
             <path d="M -10 900 L -10 520 C 50 520 70 360 130 320 C 190 280 210 440 270 420 C 330 400 350 220 430 240 C 510 260 520 420 600 400 L 700 380 L 700 900 Z"
               fill="url(#waveGrad1)" />
           </svg>
+          <div className="space-y-20">
+            <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10">
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+              <span className="text-xs text-purple-400 uppercase tracking-[0.2em]">
+                Administrative Control Platform
+              </span>
+            </div>
+            <div className=" space-y-7 pt-20 lg:pt-0">
 
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-gray-800" />
-            <span className="text-xs text-gray-500 uppercase tracking-[0.2em]">
-              Administrative Control Platform
-            </span>
-            <div className="flex-1 h-px bg-gray-800" />
+              <h1 className="text-5xl lg:text-7xl font-bold leading-[1.05]">
+                <span className="text-purple-600">Admin Portal For</span><span className="text-white"> Workforce Management</span>
+              </h1>
+
+              <p className="text-gray-400 text-lg max-w-lg leading-relaxed">
+                Track attendance, manage shifts, and monitor your employees in real time
+                with a powerful admin dashboard designed for modern teams.
+              </p>
+
+            </div>
           </div>
-          <div className="xl:mt-28 space-y-7">
-            {/* <h1 className="text-5xl lg:text-7xl font-bold leading-[1.05]">
-              Admin Portal For<span className="text-purple-600"> Workforce Management</span>
-            </h1> */}
-
-             <h1 className="text-5xl lg:text-7xl font-bold leading-[1.05]">
-              <span className="text-purple-600">Admin Portal For</span><span className="text-white"> Workforce Management</span>
-            </h1>
-
-            <p className="text-gray-400 text-lg max-w-lg leading-relaxed">
-              Track attendance, manage shifts, and monitor your employees in real time
-              with a powerful admin dashboard designed for modern teams.
-            </p>
-
-          </div>
-
-
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="relative w-full h-full flex justify-center items-center">
+        <div className="relative w-full h-full flex justify-center items-center pb-5 lg:pb-0 pt-10 lg:pt-0">
 
           <div className="absolute -top-10 left-10 w-[500px] h-[500px] bg-purple-600 opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
 
