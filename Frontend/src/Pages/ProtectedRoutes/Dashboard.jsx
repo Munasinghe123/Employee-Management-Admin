@@ -12,6 +12,8 @@ import {
 import Logo from '../../Images/new-logo.png'
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 // ── MOCK DATA  
 const kpiData = [
@@ -118,6 +120,11 @@ export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navigate = useNavigate()
+    const {logout} = useContext(AuthContext);
+
+    const handleLogout = () => {
+        logout();
+    };
 
     return (
         <div className="flex h-screen bg-[#0A0F1A] text-white overflow-hidden font-sans">
@@ -182,7 +189,7 @@ export default function Dashboard() {
                         <p className="text-xs font-medium truncate">Sarah Jenkins</p>
                         <p className="text-[10px] text-[#4E6680]">Super Admin</p>
                     </div>
-                    <LogOut size={13} className="text-[#4E6680] cursor-pointer hover:text-[#F05858] transition-colors flex-shrink-0" />
+                    <LogOut onClick={() => handleLogout()} size={13} className="text-[#4E6680] cursor-pointer hover:text-[#F05858] transition-colors flex-shrink-0" />
                 </div>
             </aside>
 

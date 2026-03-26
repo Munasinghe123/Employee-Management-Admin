@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import laptop from '../../Images/laptop-bg.png'
 import { useEffect } from "react"
 import gsap from "gsap"
-
+// import laptop from '../../Images/laptop2.png'
 
 
 function LandingPage() {
