@@ -13,8 +13,8 @@ import ProtectedRoute from './Pages/ProtectedRoutes/ProtectedRoute';
 
 import DashboardLayout from './Layouts/Dashboard';
 import Attendance from './Pages/ProtectedRoutes/Attendence';
-// import Employees from './pages/Employees';
-// import Settings from './pages/Settings';
+import Employees from './Pages/ProtectedRoutes/Employees';
+import Settings from './Pages/ProtectedRoutes/Settings';
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -30,7 +30,6 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
 
-      {/* Public Header */}
       {!user && <Header />}
 
       <main className="flex-1 flex flex-col">
@@ -41,7 +40,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
 
-          {/* 🔥 PROTECTED DASHBOARD */}
+          {/*  PROTECTED DASHBOARD */}
           <Route
             path="/dashboard"
             element={
@@ -56,15 +55,14 @@ function App() {
 
             {/* Pages */}
             <Route path="attendance" element={<Attendance />} />
-            {/* <Route path="employees" element={<Employees />} />
-            <Route path="settings" element={<Settings />} /> */}
+            <Route path="employees" element={<Employees />} />
+            <Route path="settings" element={<Settings />} />
 
           </Route>
 
         </Routes>
       </main>
 
-      {/* Public Footer */}
       {!user && <Footer />}
 
     </div>

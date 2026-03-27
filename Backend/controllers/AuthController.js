@@ -99,7 +99,7 @@ const checkToken = async (req, res) => {
     try {
         console.log("COOKIES:", req.cookies);
         const accessToken = req.cookies.accessToken;
-        console.log("token check, ",accessToken);
+        console.log("token check, ", accessToken);
         if (!accessToken) return res.status(401).json({ message: "No token found" });
 
         const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
@@ -120,5 +120,28 @@ const logoutUser = (req, res) => {
     return res.status(200).json({ message: 'Logout successful' });
 };
 
+const editAccount = async (req, res) => {
+    const { id } = req.params
+    const { name, password } = req.body
 
-module.exports = { register, login, checkToken, logoutUser }
+    try {
+        const updateData = { name, userName }
+
+        if (password) {
+            updateData.password = password
+        }
+
+        await db.query(
+            "UPDATE employee SET name=?, userName=?, password=? WHERE employeeId=?",
+            [name, userName, password || null, id]
+        )
+
+        res.json({ message: "Updated successfully" })
+
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+
+module.exports = { register, login, checkToken, logoutUser, editAccount }

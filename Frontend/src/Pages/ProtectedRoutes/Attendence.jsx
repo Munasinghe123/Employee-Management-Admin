@@ -147,9 +147,8 @@ export default function Attendance() {
               return (
                 <tr
                   key={i}
-                  className={`bg-[#0F172A] rounded-lg ${
-                    isInvalid ? "border border-red-500/30" : ""
-                  }`}
+                  className={`bg-[#0F172A] rounded-lg ${isInvalid ? "border border-red-500/30" : ""
+                    }`}
                 >
 
                   <td className="px-4 py-3">{row.employeeId}</td>
@@ -171,7 +170,7 @@ export default function Attendance() {
                   </td>
 
                   {/* CHECK-IN VALID */}
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3">
                     {row.checkInTime ? (
                       row.checkInValid === 1 ? (
                         <span className="text-green-400">Valid ✔</span>
@@ -194,7 +193,7 @@ export default function Attendance() {
                   </td>
 
                   {/* CHECK-OUT VALID */}
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3">
                     {row.checkOutTime ? (
                       row.checkOutValid === 1 ? (
                         <span className="text-green-400">Valid ✔</span>
