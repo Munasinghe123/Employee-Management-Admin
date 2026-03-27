@@ -6,14 +6,14 @@ export default function Topbar({ setSidebarOpen }) {
 
   const getTitle = () => {
     switch (location.pathname) {
-      case "/attendance":
+      case "/dashboard/attendance":
         return "Attendance";
-      case "/employees":
+      case "/dashboard/employees":
         return "Employees";
-      case "/settings":
-        return "Settings";
+      // case "/dashboard/settings":
+      //   return "Settings";
       default:
-        return "Dashboard";
+        return "System Overview";
     }
   };
 

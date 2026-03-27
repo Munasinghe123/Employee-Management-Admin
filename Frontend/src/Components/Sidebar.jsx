@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Clock, Users, Settings, LogOut } from "lucide-react";
+import { Clock, Users, Settings, LogOut,NotepadText } from "lucide-react";
 import Logo from '../Images/Leco.png'
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -16,13 +16,14 @@ export default function Sidebar() {
     const navItems = [
         { label: "Attendance", icon: Clock, path: "/dashboard/attendance" },
         { label: "Employees", icon: Users, path: "/dashboard/employees" },
-        { label: "Settings", icon: Settings, path: "/dashboard/settings" },
+        {label:"Daily log sheet", icon:NotepadText,path:"/dashboard/logsheet" },
+        // { label: "My Account", icon: Settings, path: "/dashboard/settings" },
     ];
 
     return (
         <aside className="w-[220px] bg-[#0D1422] border-r border-[#1A2B3C] flex flex-col">
             <div className="flex flex-row p-5">
-                <img src={Logo} height={30} width={30} />
+                <img src={Logo} height={30} width={30}  className="rounded-lg"/>
                 <div className="p-4 font-bold text-white">LECO Admin</div>
             </div>
 

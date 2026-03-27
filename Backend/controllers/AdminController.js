@@ -31,7 +31,7 @@ const getAttendance = async (req, res) => {
 
         let query = `
       SELECT 
-        a.employeeId,
+        a.id,
         a.substationId,
         a.shiftId,
         a.checkInTime,
@@ -107,7 +107,7 @@ const allEmployees = async (req, res) => {
 
 const addEmployee = async (req, res) => {
     try {
-        const { employeeId, name, userName, password, role, substationId } = req.body;
+        const { id, name, userName, password, role, substationId } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -152,4 +152,61 @@ const deleteEmployee = async (req, res) => {
     }
 };
 
-module.exports = { allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }
+
+const getFullLogsByEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 1. Get all logs for employee
+    const [logs] = await db.query(`
+      SELECT dl.*, s.name AS substationName
+      FROM daily_logs dl
+      JOIN substations s ON dl.substationId = s.substationId
+      WHERE dl.employeeId = ?
+      ORDER BY dl.logDate DESC, dl.logTime DESC
+    `, [id]);
+
+    // 2. For each log, attach related data
+    const fullLogs = [];
+
+    for (const log of logs) {
+      const id = log.id;
+
+      // feeders
+      const [feeders] = await db.query(`
+        SELECT feederNo, current
+        FROM feeder_logs
+        WHERE dailyLogId = ?
+      `, [id]);
+
+      // station supply
+      const [stationRows] = await db.query(`
+        SELECT voltage, amps
+        FROM station_supply_logs
+        WHERE dailyLogId = ?
+      `, [id]);
+
+      // transformers
+      const [transformers] = await db.query(`
+        SELECT transformerNo, kv33, kv11, amps11, tapPosition, pf
+        FROM transformer_logs
+        WHERE dailyLogId = ?
+      `, [id]);
+
+      fullLogs.push({
+        ...log,
+        stationSupply: stationRows[0] || null,
+        feeders,
+        transformers
+      });
+    }
+
+    res.json(fullLogs);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { getFullLogsByEmployee, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }

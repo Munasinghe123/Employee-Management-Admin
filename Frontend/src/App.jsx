@@ -15,6 +15,7 @@ import DashboardLayout from './Layouts/Dashboard';
 import Attendance from './Pages/ProtectedRoutes/Attendence';
 import Employees from './Pages/ProtectedRoutes/Employees';
 import Settings from './Pages/ProtectedRoutes/Settings';
+import LogSheet from './Pages/ProtectedRoutes/LogSheet';
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -56,7 +57,8 @@ function App() {
             {/* Pages */}
             <Route path="attendance" element={<Attendance />} />
             <Route path="employees" element={<Employees />} />
-            <Route path="settings" element={<Settings />} />
+            {/* <Route path="settings" element={<Settings />} /> */}
+            <Route path='logsheet' element={<LogSheet/>}/>
 
           </Route>
 
