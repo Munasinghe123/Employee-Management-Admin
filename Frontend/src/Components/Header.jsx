@@ -54,7 +54,7 @@ function Header() {
             <Link
               to="/login"
               className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
-                rounded-xl font-semibold text-white shadow-lg 
+                rounded-full font-semibold text-white shadow-lg 
                 hover:from-purple-600 hover:to-purple-800
                 hover:shadow-purple-500/40
                 hover:pr-6
@@ -70,7 +70,7 @@ function Header() {
             <Link
               to="/register"
               className="px-8 py-3 border border-white/50 text-white cursor-pointer
-                         hover:pr-6 rounded-xl font-semibold hover:bg-white/10
+                         hover:pr-6 rounded-full font-semibold hover:bg-white/10
                         transition-all duration-300 overflow-hidden group flex items-center"
             >
               Register

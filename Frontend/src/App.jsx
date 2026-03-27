@@ -1,17 +1,22 @@
-import React, { useContext } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { AuthContext } from './context/AuthContext'
+import React, { useContext } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 
-import Header from './Components/Header'
-import Landing from './Pages/OpenRoutes/LandingPage'
-import Login from './Pages/OpenRoutes/Login'
-import Register from './Pages/OpenRoutes/Register'
-import Footer from './Components/Footer'
-import Dashboard from './Pages/ProtectedRoutes/Dashboard'
-import ProtectedRoute from './Pages/ProtectedRoutes/ProtectedRoute'
+import Header from './Components/Header';
+import Landing from './Pages/OpenRoutes/LandingPage';
+import Login from './Pages/OpenRoutes/Login';
+import Register from './Pages/OpenRoutes/Register';
+import Footer from './Components/Footer';
+
+import ProtectedRoute from './Pages/ProtectedRoutes/ProtectedRoute';
+
+
+import DashboardLayout from './Layouts/Dashboard';
+import Attendance from './Pages/ProtectedRoutes/Attendence';
+// import Employees from './pages/Employees';
+// import Settings from './pages/Settings';
 
 function App() {
-
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
@@ -23,41 +28,47 @@ function App() {
   }
 
   return (
-
     <div className="min-h-screen flex flex-col">
-      {
-        !user && <Header />
-      }
 
+      {/* Public Header */}
+      {!user && <Header />}
 
-      {/* Page Content */}
       <main className="flex-1 flex flex-col">
         <Routes>
+
+          {/* PUBLIC ROUTES */}
           <Route path='/' element={<Landing />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
 
-          {/* protected */}
+          {/* 🔥 PROTECTED DASHBOARD */}
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute role="admin">
-                <Dashboard />
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          />
+          >
+
+            {/* Default redirect */}
+            <Route index element={<Navigate to="attendance" />} />
+
+            {/* Pages */}
+            <Route path="attendance" element={<Attendance />} />
+            {/* <Route path="employees" element={<Employees />} />
+            <Route path="settings" element={<Settings />} /> */}
+
+          </Route>
 
         </Routes>
       </main>
 
-      {
-        !user && <Footer />
-      }
-
+      {/* Public Footer */}
+      {!user && <Footer />}
 
     </div>
-
-  )
+  );
 }
 
-export default App
+export default App;

@@ -50,7 +50,7 @@ function LandingPage() {
             <path d="M -10 900 L -10 520 C 50 520 70 360 130 320 C 190 280 210 440 270 420 C 330 400 350 220 430 240 C 510 260 520 420 600 400 L 700 380 L 700 900 Z"
               fill="url(#waveGrad1)" />
           </svg>
-          <div className="space-y-20">
+          <div className="space-y-10">
             <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
               <span className="text-xs text-purple-400 uppercase tracking-[0.2em]">

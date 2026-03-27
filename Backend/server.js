@@ -6,6 +6,7 @@ const db = require('./config/db-config')
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/AuthRoutes');
+const adminRoutes  = require('./routes/AdminRoutes')
 
 const port = process.env.PORT;
 const app = express();
@@ -30,6 +31,7 @@ app.use(cookieParser());
 
 //routes
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 
 app.listen(port, "0.0.0.0", () => {
