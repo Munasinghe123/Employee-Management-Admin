@@ -32,6 +32,7 @@ const getAttendance = async (req, res) => {
         let query = `
       SELECT 
         a.id,
+        a.employeeId,
         a.substationId,
         a.shiftId,
         a.checkInTime,

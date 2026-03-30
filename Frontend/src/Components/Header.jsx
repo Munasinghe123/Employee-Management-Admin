@@ -3,11 +3,15 @@ import Logo from "../Images/new-logo.png"
 import { Link } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 import gsap from "gsap"
+import { useContext } from "react"
+import { AuthContext } from "../context/AuthContext"
 
 function Header() {
 
   const sidebarRef = useRef(null)
   const overlayRef = useRef(null)
+  const{user} = useContext(AuthContext)
+
 
   const openNav = () => {
     gsap.to(sidebarRef.current, {

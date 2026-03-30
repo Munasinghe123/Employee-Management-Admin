@@ -1,12 +1,16 @@
 import React from "react"
 import { Link } from 'react-router-dom'
-import laptop from '../../Images/laptop-bg.png'
+import laptop from '../../Images/hero.png'
 import { useEffect } from "react"
 import gsap from "gsap"
 // import laptop from '../../Images/laptop2.png'
+import { useContext } from "react"
+import { AuthContext } from "../../context/AuthContext"
 
 
 function LandingPage() {
+
+  const { user } = useContext(AuthContext)
 
   useEffect(() => {
     // only animate on desktop
@@ -83,6 +87,24 @@ function LandingPage() {
           />
 
         </div>
+
+        {
+          user && (
+            <div className="absolute top-5 right-5">
+              <Link
+                to="/dashboard/attendance"
+                 className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
+                rounded-full font-semibold text-white shadow-lg 
+                hover:from-purple-600 hover:to-purple-800
+                hover:shadow-purple-500/40
+                flex items-center overflow-hidden">
+                Dashboard 
+                </Link>
+            </div>
+          )
+        }
+
+
       </div>
     </section>
   )
