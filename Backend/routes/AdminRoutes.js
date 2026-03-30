@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router();
-const { allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
+const { getFullLogsByEmployee, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
 const authorizeRoles = require('../Middleware/RoleMiddleWare')
 const verifyToken = require('../Middleware/VerifyAccessToken');
 
@@ -52,6 +52,13 @@ router.delete(
     verifyToken,
     authorizeRoles('admin'),
     deleteEmployee
+)
+
+router.get(
+    '/get-full-logs-by-employee/:id',
+    verifyToken,
+    authorizeRoles('admin'),
+    getFullLogsByEmployee
 )
 
 module.exports = router
