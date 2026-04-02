@@ -79,8 +79,6 @@ function LandingPage() {
         {/* RIGHT SIDE */}
         <div className="relative w-full h-full flex justify-center items-center pb-5 lg:pb-0 pt-10 lg:pt-0">
 
-          <div className="absolute -top-10 left-10 w-[500px] h-[500px] bg-purple-600 opacity-10 blur-[120px] rounded-full pointer-events-none"></div>
-
           <img
             src={laptop}
             className="laptop relative w-full"
@@ -93,13 +91,13 @@ function LandingPage() {
             <div className="absolute top-5 right-5">
               <Link
                 to="/dashboard/attendance"
-                 className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
+                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
                 rounded-full font-semibold text-white shadow-lg 
                 hover:from-purple-600 hover:to-purple-800
                 hover:shadow-purple-500/40
                 flex items-center overflow-hidden">
-                Dashboard 
-                </Link>
+                Dashboard
+              </Link>
             </div>
           )
         }

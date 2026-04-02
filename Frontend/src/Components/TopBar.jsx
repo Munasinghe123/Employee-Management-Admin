@@ -10,8 +10,10 @@ export default function Topbar({ setSidebarOpen }) {
         return "Attendance";
       case "/dashboard/employees":
         return "Employees";
-      // case "/dashboard/settings":
-      //   return "Settings";
+      case "/dashboard/logsheet":
+        return "Log Sheet";
+      case "/dashboard/substations":
+        return "Substations";
       default:
         return "System Overview";
     }

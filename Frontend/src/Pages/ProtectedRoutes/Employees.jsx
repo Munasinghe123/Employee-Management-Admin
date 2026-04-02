@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { ChevronDown } from 'lucide-react';
 
 export default function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -9,6 +10,7 @@ export default function Employees() {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [updateModal, setUpdateModal] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
+  const [substations, setSubstations] = useState([]);
 
   const [form, setForm] = useState({
     employeeId: "",
@@ -23,30 +25,44 @@ export default function Employees() {
 
   useEffect(() => {
     fetchEmployees();
+    fetchSubstations();
   }, []);
 
   const fetchEmployees = async () => {
-    const res = await axios.get("http://localhost:7000/admin/all-employees", {
+    const res = await axios.get("http://localhost:7001/admin/all-employees", {
       withCredentials: true
     });
     console.log(res.data);
     setEmployees(res.data.data);
   };
 
+  const fetchSubstations = async () => {
+    try {
+      const res = await axios.get("http://localhost:7001/substation/get", { withCredentials: true });
+      console.log(res.data);
+      setSubstations(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // ADD / UPDATE
   const handleSubmit = async () => {
     if (editingId) {
       await axios.put(
-        `http://localhost:7000/admin/employees/${editingId}`,
+        `http://localhost:7001/admin/employees/${editingId}`,
         form,
         { withCredentials: true }
       );
     } else {
       await axios.post(
-        "http://localhost:7000/admin/employees",
+        "http://localhost:7001/admin/employees",
         form,
         { withCredentials: true }
       );
+
+      setOpen(false);
+
     }
 
     resetForm();
@@ -57,7 +73,7 @@ export default function Employees() {
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:7000/admin/employees/${id}`,
+        `http://localhost:7001/admin/employees/${id}`,
         { withCredentials: true }
       );
       console.log("Deleted:", res.data);
@@ -86,7 +102,7 @@ export default function Employees() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 ">
 
       <button
         onClick={() => setOpen(true)}
@@ -197,14 +213,26 @@ export default function Employees() {
 
                 </div>
 
-                <select
-                  value={form.substationId}
-                  onChange={(e) => setForm({ ...form, substationId: e.target.value })}
-                  className="w-full bg-[#1e1e2f] px-3 py-2 rounded">
-                  <option value="" disabled >Select Substation</option>
-                  <option value="PSS-ANI">Aniyakanda PSS</option>
-                  <option value="PSS-MAB">Mabola PSS</option>
-                </select>
+                <div className="relative inline-block w-full">
+                  <select
+                    value={form.substationId}
+                    onChange={(e) => setForm({ ...form, substationId: e.target.value })}
+                    className="appearance-none w-full bg-[#1e1e2f] px-3 py-2 rounded">
+                    {/* <option value="" disabled >Select Substation</option>
+                    <option value="PSS-ANI">Aniyakanda PSS</option>
+                    <option value="PSS-MAB">Mabola PSS</option> */}
+                    <option value="" disabled>
+                      Select Substation
+                    </option>
+                    {substations.data && substations.data.map((sub, idx) => (
+                      <option key={idx} value={sub.substationId}>{sub.name}</option>
+                    ))}
+                  </select>
+
+                  <ChevronDown className="absolute right-3 bottom-1 text-purple-400 pointer-events-none" />
+                </div>
+
+
 
               </div>
 
@@ -359,7 +387,7 @@ export default function Employees() {
                 onClick={async () => {
                   try {
                     await axios.put(
-                      `http://localhost:7000/admin/employees/${selectedEmployee.employeeId}`,
+                      `http://localhost:7001/admin/employees/${selectedEmployee.employeeId}`,
                       selectedEmployee,
                       { withCredentials: true }
                     );

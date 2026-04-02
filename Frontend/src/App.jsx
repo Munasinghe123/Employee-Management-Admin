@@ -16,6 +16,7 @@ import Attendance from './Pages/ProtectedRoutes/Attendence';
 import Employees from './Pages/ProtectedRoutes/Employees';
 import Settings from './Pages/ProtectedRoutes/Settings';
 import LogSheet from './Pages/ProtectedRoutes/LogSheet';
+import Substations from './Pages/ProtectedRoutes/Substations';
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -59,6 +60,7 @@ function App() {
             <Route path="employees" element={<Employees />} />
             {/* <Route path="settings" element={<Settings />} /> */}
             <Route path='logsheet' element={<LogSheet/>}/>
+            <Route path='substations' element={<Substations/>}/>
 
           </Route>
 

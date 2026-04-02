@@ -7,7 +7,8 @@ export default function Attendance() {
   const [summary, setSummary] = useState({
     active: 0,
     completed: 0,
-    invalid: 0,
+    invalidCheckIns: 0,
+    invalidCheckOuts: 0
   });
 
   const [attendance, setAttendance] = useState([]);
@@ -27,10 +28,11 @@ export default function Attendance() {
   const fetchSummary = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:7000/admin/attendance-summary",
+        "http://localhost:7001/admin/attendance-summary",
         { withCredentials: true }
       );
       setSummary(res.data);
+      console.log("attendence summary",res.data);
     } catch (err) {
       console.error(err);
     }
@@ -39,7 +41,7 @@ export default function Attendance() {
   const fetchAttendance = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:7000/admin/attendance",
+        "http://localhost:7001/admin/attendance",
         {
           params: { date },
           withCredentials: true
@@ -73,10 +75,10 @@ export default function Attendance() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
 
       {/*  CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
         <div className="bg-[#1e1e2f] p-6 rounded-2xl flex justify-between">
           <div>
@@ -96,8 +98,16 @@ export default function Attendance() {
 
         <div className="bg-[#1e1e2f] p-6 rounded-2xl flex justify-between">
           <div>
-            <p className="text-gray-400 text-sm">Invalid</p>
-            <h2 className="text-3xl font-bold">{summary.invalid}</h2>
+            <p className="text-gray-400 text-sm">Invalid Check-Ins</p>
+            <h2 className="text-3xl font-bold">{summary.invalidCheckIns}</h2>
+          </div>
+          <AlertTriangle className="text-red-400" />
+        </div>
+
+        <div className="bg-[#1e1e2f] p-6 rounded-2xl flex justify-between">
+          <div>
+            <p className="text-gray-400 text-sm">Invalid Check-Outs</p>
+            <h2 className="text-3xl font-bold">{summary.invalidCheckOuts}</h2>
           </div>
           <AlertTriangle className="text-red-400" />
         </div>
@@ -123,7 +133,7 @@ export default function Attendance() {
         <table className="w-full text-sm border-separate border-spacing-y-2">
 
           {/* HEADER */}
-          <thead className="text-[#4E6680] text-left">
+          <thead className="text-[#4E6680] text-left ">
             <tr>
               <th className="px-4 py-2">Employee</th>
               <th className="px-4 py-2">Substation</th>

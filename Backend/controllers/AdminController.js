@@ -71,7 +71,8 @@ const getAttendanceSummary = async (req, res) => {
       SELECT 
         COUNT(CASE WHEN checkInTime IS NOT NULL AND checkOutTime IS NULL THEN 1 END) AS active,
         COUNT(CASE WHEN checkInTime IS NOT NULL AND checkOutTime IS NOT NULL THEN 1 END) AS completed,
-        COUNT(CASE WHEN checkInValid = 0 THEN 1 END) AS invalid
+        COUNT(CASE WHEN checkInValid = 0 THEN 1 END) AS invalidCheckIns,
+        COUNT(CASE WHEN checkOutValid = 0 THEN 1 END) AS invalidCheckOuts
       FROM attendance
       WHERE attendanceDate = ?
     `, [today]);
@@ -108,7 +109,11 @@ const allEmployees = async (req, res) => {
 
 const addEmployee = async (req, res) => {
     try {
-        const { id, name, userName, password, role, substationId } = req.body;
+        console.log("add employee hit", req.body);
+
+        const { employeeId, name, userName, password, role, substationId } = req.body;
+
+        console.log("add employee", req.body);
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -154,60 +159,86 @@ const deleteEmployee = async (req, res) => {
 };
 
 
-const getFullLogsByEmployee = async (req, res) => {
-  try {
-    const { id } = req.params;
+const getFullLogs = async (req, res) => {
+    try {
+        const { substation, employeeId } = req.query;
 
-    // 1. Get all logs for employee
-    const [logs] = await db.query(`
+        //  Clean inputs
+        const cleanSub = substation?.trim();
+        const cleanEmp = employeeId?.trim();
+
+        if (!cleanSub && !cleanEmp) {
+            return res.json([]);
+        }
+
+        //  Base query
+        let query = `
       SELECT dl.*, s.name AS substationName
       FROM daily_logs dl
       JOIN substations s ON dl.substationId = s.substationId
-      WHERE dl.employeeId = ?
-      ORDER BY dl.logDate DESC, dl.logTime DESC
-    `, [id]);
+      WHERE 1=1
+    `;
 
-    // 2. For each log, attach related data
-    const fullLogs = [];
+        const params = [];
 
-    for (const log of logs) {
-      const id = log.id;
+        //  Add filters dynamically
+        if (cleanSub) {
+            query += ` AND dl.substationId = ?`;
+            params.push(cleanSub);
+        }
 
-      // feeders
-      const [feeders] = await db.query(`
+        if (cleanEmp) {
+            query += ` AND dl.employeeId = ?`;
+            params.push(cleanEmp);
+        }
+
+        //  Sorting
+        query += ` ORDER BY dl.logDate DESC, dl.logTime DESC`;
+
+        const [logs] = await db.query(query, params);
+
+        if (logs.length === 0) {
+            return res.json([]);
+        }
+
+        //  Attach related data (same as before)
+        const fullLogs = [];
+
+        for (const log of logs) {
+            const logId = log.id;
+
+            const [feeders] = await db.query(`
         SELECT feederNo, current
         FROM feeder_logs
         WHERE dailyLogId = ?
-      `, [id]);
+      `, [logId]);
 
-      // station supply
-      const [stationRows] = await db.query(`
+            const [stationRows] = await db.query(`
         SELECT voltage, amps
         FROM station_supply_logs
         WHERE dailyLogId = ?
-      `, [id]);
+      `, [logId]);
 
-      // transformers
-      const [transformers] = await db.query(`
+            const [transformers] = await db.query(`
         SELECT transformerNo, kv33, kv11, amps11, tapPosition, pf
         FROM transformer_logs
         WHERE dailyLogId = ?
-      `, [id]);
+      `, [logId]);
 
-      fullLogs.push({
-        ...log,
-        stationSupply: stationRows[0] || null,
-        feeders,
-        transformers
-      });
+            fullLogs.push({
+                ...log,
+                stationSupply: stationRows[0] || null,
+                feeders,
+                transformers
+            });
+        }
+
+        return res.json(fullLogs);
+
+    } catch (error) {
+        console.error("Error fetching logs:", error);
+        return res.status(500).json({ message: "Server error" });
     }
-
-    res.json(fullLogs);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
-  }
 };
 
-module.exports = { getFullLogsByEmployee, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }
+module.exports = { getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }
