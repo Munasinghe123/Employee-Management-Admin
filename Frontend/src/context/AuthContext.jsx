@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
         const fetchUser = async () => {
             try {
                 const response = await axios.get(
-                    'http://localhost:7000/auth/check-token',
+                    'http://localhost:7001/auth/check-token',
                     { withCredentials: true }
                 );
 
@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.post('http://localhost:7000/auth/logout', {}, { withCredentials: true })
+            await axios.post('http://localhost:7001/auth/logout', {}, { withCredentials: true })
             setUser(null);
             navigate('/');
         } catch (err) {

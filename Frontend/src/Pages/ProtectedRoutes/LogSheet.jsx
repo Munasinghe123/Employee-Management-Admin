@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { ChevronDown } from 'lucide-react';
 
 function EmployeeLogs() {
 
   const [logs, setLogs] = useState([]);
   const [expandedLogId, setExpandedLogId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [substation, setSubstation] = useState("")
   const [employeeId, setEmployeeId] = useState("")
+  const [allSubstations, setAllSubstations] = useState([]);
 
   const exportToExcel = (log) => {
     const ws = XLSX.utils.aoa_to_sheet([]);
@@ -80,35 +83,74 @@ function EmployeeLogs() {
 
     XLSX.writeFile(wb, `Structured_Log_${log.id}.xlsx`);
   };
+
   useEffect(() => {
 
-    axios
-      .get(`http://localhost:7000/admin/get-full-logs-by-employee/${employeeId}`, { withCredentials: true })
+    axios.get(
+      `http://localhost:7001/admin/getFullLogs?substation=${substation}&employeeId=${employeeId}`,
+      { withCredentials: true }
+    )
       .then((res) => {
         setLogs(res.data);
-        console.log(res.data);
+        console.log("log data", res.data);
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
         setLoading(false);
       });
-  }, [employeeId]);
+  }, [substation, employeeId]);
+
+  useEffect(() => {
+    const fetchSubstations = async () => {
+      try {
+        const res = await axios.get("http://localhost:7001/substation/get", { withCredentials: true });
+        setAllSubstations(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchSubstations();
+  }, []);
+
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 space-y-6">
 
-      <h2 className="text-2xl font-semibold text-white space-x-3">
-        <span>Enter Employee Id </span>
-        <input className="text-purple-400 border border-purple-700 rounded-2xl px-5 max-w-52" type="text" value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
-      </h2>
+      <div className="flex space-x-20">
 
-      {logs.length > 0 &&
-        < h2 className="text-2xl font-semibold text-white">
-          Logs for <span className="text-purple-400">{employeeId}</span>
-        </h2>}
+        <h2 className="text-2xl font-semibold text-white space-x-3">
+          <span>Employee Id </span>
+          <input
+            type="text"
+            className="text-white border placeholder:text-white border-purple-700 text-sm rounded-2xl py-2 px-5 w-52 bg-transparent"
+            placeholder="Enter Employee Id"
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
+          />
+        </h2>
+
+        <h2 className="text-2xl font-semibold text-white space-x-3">
+          <span>Substation </span>
+          <div className="relative inline-block">
+            <select className="appearance-none bg-[#0A0F1A]  border border-purple-700 text-sm rounded-2xl py-2 px-5 w-52" value={substation} onChange={(e) => setSubstation(e.target.value)}>
+              <option value="" disabled>
+                Select Substation
+              </option>
+
+              {allSubstations.data && allSubstations.data.map((sub, idx) => (
+                <option key={idx} value={sub.substationId}>{sub.name}</option>
+              ))}
+            </select>
+
+            <ChevronDown className="absolute right-3 bottom-1 text-purple-400 pointer-events-none" />
+          </div>
+        </h2>
+      </div>
+
 
 
       {/* TABLE CARD */}
@@ -121,6 +163,7 @@ function EmployeeLogs() {
             <tr>
               <th className="text-left py-3 px-2">Date</th>
               <th>Time</th>
+              <th>Employee Id</th>
               <th>Substation</th>
               <th>Remarks</th>
               <th>Action</th>
@@ -145,6 +188,7 @@ function EmployeeLogs() {
                   </td>
 
                   <td className="text-gray-300">{log.logTime}</td>
+                  <td className="text-gray-300">{log.employeeId}</td>
                   <td className="text-gray-300">{log.substationName}</td>
                   <td className="text-gray-400">{log.remarks}</td>
 

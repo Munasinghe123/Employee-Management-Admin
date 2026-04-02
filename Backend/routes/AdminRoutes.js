@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router();
-const { getFullLogsByEmployee, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
+const { getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
 const authorizeRoles = require('../Middleware/RoleMiddleWare')
 const verifyToken = require('../Middleware/VerifyAccessToken');
 
@@ -55,10 +55,10 @@ router.delete(
 )
 
 router.get(
-    '/get-full-logs-by-employee/:id',
+    '/getFullLogs',
     verifyToken,
     authorizeRoles('admin'),
-    getFullLogsByEmployee
+    getFullLogs
 )
 
 module.exports = router

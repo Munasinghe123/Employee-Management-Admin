@@ -28,7 +28,7 @@ function Settings() {
       }
 
       await axios.put(
-        `http://localhost:7000/users/${user.employeeId}`,
+        `http://localhost:7001/users/${user.employeeId}`,
         payload,
         { withCredentials: true }
       )
