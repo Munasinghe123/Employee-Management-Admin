@@ -25,34 +25,24 @@ const getTodayCheckins = async (req, res) => {
 
 const getAttendance = async (req, res) => {
     try {
-        const { date, substation } = req.query;
+        const { date } = req.query;
 
-        console.log(date,substation)
+        console.log(date)
 
         const selectedDate = date || new Date().toISOString().split("T")[0];
 
-        let query = `
-      SELECT 
-        a.id,
-        a.employeeId,
-        a.substationId,
-        a.shiftId,
-        a.checkInTime,
-        a.checkOutTime,
-        a.checkInValid,
-        a.checkOutValid
-      FROM attendance a
-      WHERE DATE(a.attendanceDate) = ?
-    `;
-
-        const params = [selectedDate];
-
-        if (substation && substation !== "all") {
-            query += ` AND a.substationId = ?`;
-            params.push(substation);
-        }
-
-        const [rows] = await db.query(query, params);
+        const [rows] = await db.query(
+            `SELECT 
+                a.id,
+                a.employeeId,
+                a.substationId,
+                a.shiftId,
+                a.checkInTime,
+                a.checkOutTime,
+                a.checkInValid,
+                a.checkOutValid
+            FROM attendance a
+            WHERE DATE(a.attendanceDate) = ?` , [selectedDate])
 
         console.log("attendece ", rows);
 
@@ -98,7 +88,7 @@ const allEmployees = async (req, res) => {
             return res.status(404).json("No employees found")
         }
 
-        console.log("all employees", employees);
+        // console.log("all employees", employees);
 
         res.status(200).json({
             message: "All employees",
@@ -267,26 +257,68 @@ const getOtHours = async (req, res) => {
     }
 }
 
-const getAttendenceById = async (req, res) => {
+const getAttendanceById = async (req, res) => {
     try {
         const { employeeId } = req.query;
-        console.log("empoloyee id", employeeId);
+
+        if (!employeeId) {
+            return res.status(400).json({ message: "employeeId is required" });
+        }
 
         const [rows] = await db.query(
-            `SELECT * FROM attendance WHERE employeeId = ?`,
+            `SELECT * FROM attendance WHERE employeeId = ? ORDER BY checkInTime DESC`,
             [employeeId]
         );
 
-        if (rows.length < 0) {
-            return
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "No records found" });
         }
 
-        res.json(rows);
+        console.log("attendence", rows);
+
+        return res.json(rows);
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ error: "Internal server error" });
     }
-}
+};
 
 
-module.exports = { getAttendenceById, getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee, getOtHours }
+const searchEmployees = async (req, res) => {
+  try {
+    const { employeeId } = req.query;
+
+    if (!employeeId || employeeId.trim() === "") {
+      return res.status(400).json({
+        message: "employeeId query param is required"
+      });
+    }
+
+    const [rows] = await db.query(
+      `
+      SELECT 
+        employeeId,
+        name,
+        userName,
+        role,
+        substationId
+      FROM admin
+      WHERE employeeId LIKE ?
+      `,
+      [`%${employeeId.trim()}%`]
+    );
+
+    return res.status(200).json({
+      data: rows
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+};
+
+module.exports = { searchEmployees,getAttendanceById, getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee, getOtHours }

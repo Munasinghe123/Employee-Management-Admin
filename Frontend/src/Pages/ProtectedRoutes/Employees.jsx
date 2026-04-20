@@ -11,6 +11,10 @@ export default function Employees() {
   const [updateModal, setUpdateModal] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [substations, setSubstations] = useState([]);
+  const [viewEmployee, setViewEmployee] = useState(false);
+  const [clickedEmployee, setClickedEmployee] = useState(null);
+  const [clickedEmployeeDetails, setClickedEmployeeDetails] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [form, setForm] = useState({
     employeeId: "",
@@ -23,10 +27,58 @@ export default function Employees() {
 
   const [editingId, setEditingId] = useState(null);
 
+  const filteredEmployees = employees.filter(emp =>
+    emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     fetchEmployees();
     fetchSubstations();
   }, []);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:7001/admin/getAttendenceById', {
+          params: { employeeId: clickedEmployee },
+          withCredentials: true
+        })
+        console.log("employee data", response.data);
+        setClickedEmployeeDetails(response.data);
+
+      } catch (error) {
+
+      }
+    }
+
+    fetchDetails()
+  }, [clickedEmployee])
+
+  useEffect(() => {
+    const fetchSearchedEmployees = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:7001/admin/search",
+          {
+            params: { employeeId: searchTerm },
+            withCredentials: true
+          }
+        );
+
+        setEmployees(res.data.data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (searchTerm.trim() === "") {
+      fetchEmployees(); 
+      return;
+    }
+
+    fetchSearchedEmployees();
+
+  }, [searchTerm]);
 
   const fetchEmployees = async () => {
     const res = await axios.get("http://localhost:7001/admin/all-employees", {
@@ -101,15 +153,44 @@ export default function Employees() {
     setEditingId(null);
   };
 
+  const formatDateTime = (isoString) => {
+    if (!isoString) return null;
+
+    const date = new Date(isoString);
+
+    const datePart = date.toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+
+    const timePart = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return { datePart, timePart };
+  };
+
   return (
     <div className="space-y-6 p-4 ">
+      <div className=" flex space-x-20">
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-purple-600 px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition"
+        >
+          Add Employee
+        </button>
 
-      <button
-        onClick={() => setOpen(true)}
-        className="bg-purple-600 px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition"
-      >
-        Add Employee
-      </button>
+        <input
+          type="text"
+          placeholder="Search by Employee ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="text-white border placeholder:text-white border-purple-900 text-sm rounded-2xl py-2 px-5 w-52 bg-transparent"
+        />
+      </div>
+
 
       {/*  TABLE */}
       <div className="bg-[#0D1422] p-4 rounded-xl border border-[#1A2B3C]">
@@ -127,8 +208,10 @@ export default function Employees() {
           </thead>
 
           <tbody>
-            {employees.map(emp => (
-              <tr key={emp.employeeId} className="border-t border-[#1A2B3C] text-center">
+            {filteredEmployees.map(emp => (
+              <tr key={emp.employeeId}
+                onClick={() => { setViewEmployee(true); setClickedEmployee(emp.employeeId); }}
+                className="border-t border-[#1A2B3C] text-center hover:bg-[#111A2B] cursor-pointer">
 
                 <td className="text-left py-2">{emp.employeeId}</td>
                 <td>{emp.name}</td>
@@ -404,6 +487,130 @@ export default function Employees() {
                 Update
               </button>
 
+            </div>
+
+          </div>
+        </div>
+      )}
+
+
+      {viewEmployee && clickedEmployee && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[#0D1422] p-6 rounded-2xl w-[90%] max-w-6xl border border-[#1A2B3C]">
+
+            <h3 className="text-white mb-4">
+              Attendance - {clickedEmployee}
+            </h3>
+
+            <div className="max-h-[400px] overflow-y-auto">
+
+              <table className="w-full text-sm border-separate border-spacing-y-2">
+
+                <thead className="text-[#4E6680] text-left">
+                  <tr>
+                    <th className="px-4 py-2">Employee</th>
+                    <th className="px-4 py-2">Substation</th>
+                    <th className="px-4 py-2">Shift</th>
+                    <th className="px-4 py-2">Check-in</th>
+                    <th className="px-4 py-2">Check-in Location</th>
+                    <th className="px-4 py-2">Check-out</th>
+                    <th className="px-4 py-2">Check-out Location</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {clickedEmployeeDetails.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="text-center text-gray-400 py-4">
+                        No data found
+                      </td>
+                    </tr>
+                  ) : (
+                    clickedEmployeeDetails.map((row, i) => {
+
+                      const checkIn = formatDateTime(row.checkInTime);
+                      const checkOut = formatDateTime(row.checkOutTime);
+
+                      const isInvalid =
+                        row.checkInValid === 0 || row.checkOutValid === 0;
+
+                      return (
+                        <tr
+                          key={i}
+                          className={`bg-[#0F172A] rounded-lg ${isInvalid ? "border border-red-500/30" : ""
+                            }`}
+                        >
+
+                          <td className="px-4 py-3">{row.employeeId}</td>
+
+                          <td className="px-4 py-3">{row.substationId}</td>
+
+                          <td className="px-4 py-3">{row.shiftId}</td>
+
+                          <td className="px-4 py-3">
+                            {checkIn ? (
+                              <div className="flex flex-col">
+                                <span>{checkIn.datePart}</span>
+                                <span className="text-xs text-gray-400">
+                                  {checkIn.timePart}
+                                </span>
+                              </div>
+                            ) : "-"}
+                          </td>
+
+                          <td className="px-4 py-3">
+                            {row.checkInTime ? (
+                              row.checkInValid === 1 ? (
+                                <span className="text-green-400">Valid ✔</span>
+                              ) : (
+                                <span className="text-red-500">Invalid 🚩</span>
+                              )
+                            ) : "-"}
+                          </td>
+
+                          <td className="px-4 py-3">
+                            {checkOut ? (
+                              <div className="flex flex-col">
+                                <span>{checkOut.datePart}</span>
+                                <span className="text-xs text-gray-400">
+                                  {checkOut.timePart}
+                                </span>
+                              </div>
+                            ) : "-"}
+                          </td>
+
+                          <td className="px-4 py-3">
+                            {row.checkOutTime ? (
+                              row.checkOutValid === 1 ? (
+                                <span className="text-green-400">Valid ✔</span>
+                              ) : (
+                                <span className="text-red-500">Invalid 🚩</span>
+                              )
+                            ) : "-"}
+                          </td>
+
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+
+              </table>
+
+            </div>
+
+            {/* CLOSE BUTTON */}
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => {
+                  setViewEmployee(false);
+                  setClickedEmployee(null);
+                  setClickedEmployeeDetails([]);
+                }}
+                className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+              >
+                Close
+              </button>
             </div>
 
           </div>
