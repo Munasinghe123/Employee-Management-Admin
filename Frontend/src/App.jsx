@@ -17,6 +17,7 @@ import Employees from './Pages/ProtectedRoutes/Employees';
 import Settings from './Pages/ProtectedRoutes/Settings';
 import LogSheet from './Pages/ProtectedRoutes/LogSheet';
 import Substations from './Pages/ProtectedRoutes/Substations';
+import OverTime from './Pages/ProtectedRoutes/OverTime';
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -61,6 +62,7 @@ function App() {
             {/* <Route path="settings" element={<Settings />} /> */}
             <Route path='logsheet' element={<LogSheet/>}/>
             <Route path='substations' element={<Substations/>}/>
+            <Route path='overtime' element={<OverTime/>}/>
 
           </Route>
 

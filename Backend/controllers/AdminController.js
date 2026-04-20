@@ -27,6 +27,8 @@ const getAttendance = async (req, res) => {
     try {
         const { date, substation } = req.query;
 
+        console.log(date,substation)
+
         const selectedDate = date || new Date().toISOString().split("T")[0];
 
         let query = `
@@ -241,4 +243,50 @@ const getFullLogs = async (req, res) => {
     }
 };
 
-module.exports = { getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }
+const getOtHours = async (req, res) => {
+
+    try {
+        const [query] = await db.query(`
+            SELECT w.total_hours , w.overtime_hours, w.week_start_date,w.week_end_date,e.employeeId, e.name 
+            FROM employee_weekly_hours w
+            JOIN employee e ON e.employeeId = w.employee_id
+            ORDER BY w.week_start_date DESC
+            `)
+
+        if (query.length < 0) {
+            return
+        }
+
+        // console.log('ot data', query[0]);
+
+        return res.json(query);
+
+    } catch (error) {
+        console.error("Error fetching weekly hours:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+}
+
+const getAttendenceById = async (req, res) => {
+    try {
+        const { employeeId } = req.query;
+        console.log("empoloyee id", employeeId);
+
+        const [rows] = await db.query(
+            `SELECT * FROM attendance WHERE employeeId = ?`,
+            [employeeId]
+        );
+
+        if (rows.length < 0) {
+            return
+        }
+
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+module.exports = { getAttendenceById, getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee, getOtHours }

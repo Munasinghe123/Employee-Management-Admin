@@ -14,6 +14,8 @@ export default function Topbar({ setSidebarOpen }) {
         return "Log Sheet";
       case "/dashboard/substations":
         return "Substations";
+      case "/dashboard/overtime":
+        return "Overtime Hours";
       default:
         return "System Overview";
     }

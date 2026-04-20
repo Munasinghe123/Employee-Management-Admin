@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router();
-const { getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
+const { getAttendenceById, getFullLogs, getOtHours, allEmployees, updateWeeklyHours, getTodayCheckins, getAttendance, getAttendanceSummary, addEmployee, updateEmployee, deleteEmployee } = require('../controllers/AdminController')
 const authorizeRoles = require('../Middleware/RoleMiddleWare')
 const verifyToken = require('../Middleware/VerifyAccessToken');
 
@@ -60,5 +60,14 @@ router.get(
     authorizeRoles('admin'),
     getFullLogs
 )
+
+router.get(
+    '/getOtHours',
+    verifyToken,
+    authorizeRoles('admin'),
+    getOtHours
+)
+
+
 
 module.exports = router
