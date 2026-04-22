@@ -45,9 +45,9 @@ function Header() {
     <>
       {/* desktop header */}
       <header className="relative bg-[#0b0f19] z-50 w-full transition-all duration-300" >
-        <div className="hidden h-16 px-10 py-10 lg:flex items-center justify-between ">
+        <div className="hidden h-16 px-32 py-10 lg:flex items-center justify-between ">
           <Link to="/">
-            <div className="hidden lg:flex items-center md:pl-10 pl-5 pt-5 gap-3 group cursor-pointer">
+            <div className="hidden lg:flex items-center   pt-5 gap-3 group cursor-pointer">
               <img src={Logo} alt="Leco" className=" h-17 w-15 rounded-xl transition-transform duration-300 " />
             </div>
           </Link>

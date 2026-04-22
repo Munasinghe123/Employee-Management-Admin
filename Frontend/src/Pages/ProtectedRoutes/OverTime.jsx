@@ -23,9 +23,9 @@ function OverTime() {
   }, [])
 
   return (
-    <div>
+    <div className='border border-[#1A2B3C] p-4 rounded-2xl'>
       {otHours && (
-        <table className="w-full text-sm text-center ">
+        <table className="w-full text-sm text-center  ">
           <thead className="text-[#4E6680] border-b border-[#1A2B3C]">
             <tr>
               <th>Employee Id</th>

@@ -25,35 +25,35 @@ function LandingPage() {
 
   return (
     <section className="relative flex-1 flex items-center justify-center bg-[#0b0f19] text-white overflow-hidden">
+      {/* Sine wave background */}
+      <svg
+        className="hidden lg:block absolute -bottom-50 left-0 pointer-events-none w-full h-[1000px]"
+        viewBox="0 0 700 900"
+        preserveAspectRatio="xMinYMax meet"
+        fill="none"
+      >
+        <defs>
+          <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.04" />
+            <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
+          </linearGradient>
+        </defs>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 z-20 items-center justify-center  px-8 lg:px-20">
+        <path d="M -10 900 L -10 480 C 40 480 60 320 120 280 C 180 240 200 400 260 380 C 320 360 340 180 420 200 C 500 220 520 380 600 360 L 700 340 L 700 900 Z"
+          fill="url(#waveGrad2)" />
+        <path d="M -10 900 L -10 520 C 50 520 70 360 130 320 C 190 280 210 440 270 420 C 330 400 350 220 430 240 C 510 260 520 420 600 400 L 700 380 L 700 900 Z"
+          fill="url(#waveGrad1)" />
+      </svg>
+      <div className="grid grid-cols-1 lg:grid-cols-2 z-20 items-center justify-center  px-8 lg:pl-32">
 
         {/* LEFT SIDE */}
         <div className="relative max-w-xl mt-10">
 
-          {/* Sine wave background */}
-          <svg
-            className="hidden lg:block absolute -bottom-50 -left-20 pointer-events-none w-full h-[1000px]"
-            viewBox="0 0 700 900"
-            preserveAspectRatio="xMinYMax meet"
-            fill="none"
-          >
-            <defs>
-              <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.08" />
-                <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.04" />
-                <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
-              </linearGradient>
-            </defs>
 
-            <path d="M -10 900 L -10 480 C 40 480 60 320 120 280 C 180 240 200 400 260 380 C 320 360 340 180 420 200 C 500 220 520 380 600 360 L 700 340 L 700 900 Z"
-              fill="url(#waveGrad2)" />
-            <path d="M -10 900 L -10 520 C 50 520 70 360 130 320 C 190 280 210 440 270 420 C 330 400 350 220 430 240 C 510 260 520 420 600 400 L 700 380 L 700 900 Z"
-              fill="url(#waveGrad1)" />
-          </svg>
           <div className="space-y-10">
             <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
@@ -77,11 +77,11 @@ function LandingPage() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="relative w-full h-full flex justify-center items-center pb-5 lg:pb-0 pt-10 lg:pt-0">
+        <div className="relative  w-full h-full flex justify-end items-center pb-5 lg:pb-0 pt-10 lg:pt-0">
 
           <img
             src={laptop}
-            className="laptop relative w-full"
+            className="laptop  w-full"
           />
 
         </div>

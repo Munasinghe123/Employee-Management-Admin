@@ -123,7 +123,7 @@ function EmployeeLogs() {
       <div className="flex space-x-20">
 
         <h2 className="text-2xl font-semibold text-white space-x-3">
-          <span className="text-2xl">Employee Id </span>
+         
           <input
             type="text"
             className="text-white border placeholder:text-white border-purple-900 text-sm rounded-2xl py-2 px-5 w-52 bg-transparent"
@@ -134,7 +134,7 @@ function EmployeeLogs() {
         </h2>
 
         <h2 className="text-2xl font-semibold text-white space-x-3">
-          <span className="text-2xl">Substation </span>
+          
           <div className="relative inline-block">
             <select className="appearance-none bg-[#0A0F1A]  border border-purple-900 text-sm rounded-2xl py-2 px-5 w-52" value={substation} onChange={(e) => setSubstation(e.target.value)}>
               <option value="" disabled>
