@@ -25,32 +25,24 @@ const getTodayCheckins = async (req, res) => {
 
 const getAttendance = async (req, res) => {
     try {
-        const { date, substation } = req.query;
+        const { date } = req.query;
+
+        console.log(date)
 
         const selectedDate = date || new Date().toISOString().split("T")[0];
 
-        let query = `
-      SELECT 
-        a.id,
-        a.employeeId,
-        a.substationId,
-        a.shiftId,
-        a.checkInTime,
-        a.checkOutTime,
-        a.checkInValid,
-        a.checkOutValid
-      FROM attendance a
-      WHERE DATE(a.attendanceDate) = ?
-    `;
-
-        const params = [selectedDate];
-
-        if (substation && substation !== "all") {
-            query += ` AND a.substationId = ?`;
-            params.push(substation);
-        }
-
-        const [rows] = await db.query(query, params);
+        const [rows] = await db.query(
+            `SELECT 
+                a.id,
+                a.employeeId,
+                a.substationId,
+                a.shiftId,
+                a.checkInTime,
+                a.checkOutTime,
+                a.checkInValid,
+                a.checkOutValid
+            FROM attendance a
+            WHERE DATE(a.attendanceDate) = ?` , [selectedDate])
 
         console.log("attendece ", rows);
 
@@ -96,7 +88,7 @@ const allEmployees = async (req, res) => {
             return res.status(404).json("No employees found")
         }
 
-        console.log("all employees", employees);
+        // console.log("all employees", employees);
 
         res.status(200).json({
             message: "All employees",
@@ -241,4 +233,92 @@ const getFullLogs = async (req, res) => {
     }
 };
 
-module.exports = { getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee }
+const getOtHours = async (req, res) => {
+
+    try {
+        const [query] = await db.query(`
+            SELECT w.total_hours , w.overtime_hours, w.week_start_date,w.week_end_date,e.employeeId, e.name 
+            FROM employee_weekly_hours w
+            JOIN employee e ON e.employeeId = w.employee_id
+            ORDER BY w.week_start_date DESC
+            `)
+
+        if (query.length < 0) {
+            return
+        }
+
+        // console.log('ot data', query[0]);
+
+        return res.json(query);
+
+    } catch (error) {
+        console.error("Error fetching weekly hours:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+}
+
+const getAttendanceById = async (req, res) => {
+    try {
+        const { employeeId } = req.query;
+
+        if (!employeeId) {
+            return res.status(400).json({ message: "employeeId is required" });
+        }
+
+        const [rows] = await db.query(
+            `SELECT * FROM attendance WHERE employeeId = ? ORDER BY checkInTime DESC`,
+            [employeeId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "No records found" });
+        }
+
+        console.log("attendence", rows);
+
+        return res.json(rows);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+const searchEmployees = async (req, res) => {
+  try {
+    const { employeeId } = req.query;
+
+    if (!employeeId || employeeId.trim() === "") {
+      return res.status(400).json({
+        message: "employeeId query param is required"
+      });
+    }
+
+    const [rows] = await db.query(
+      `
+      SELECT 
+        employeeId,
+        name,
+        userName,
+        role,
+        substationId
+      FROM admin
+      WHERE employeeId LIKE ?
+      `,
+      [`%${employeeId.trim()}%`]
+    );
+
+    return res.status(200).json({
+      data: rows
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+};
+
+module.exports = { searchEmployees,getAttendanceById, getFullLogs, allEmployees, getTodayCheckins, getAttendance, getAttendanceSummary, deleteEmployee, updateEmployee, addEmployee, getOtHours }
