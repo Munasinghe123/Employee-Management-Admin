@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import Logo from "../Images/new-logo.png"
+import Logo from "../Images/Leco.png"
 import { Link } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 import gsap from "gsap"
@@ -44,47 +44,13 @@ function Header() {
   return (
     <>
       {/* desktop header */}
-      <header className="relative bg-[#0b0f19] z-50 w-full transition-all duration-300" >
-        <div className="hidden h-16 px-32 py-10 lg:flex items-center justify-between ">
+      <header className="fixed bg-transparent z-20 w-full transition-all duration-300" >
+        <div className="hidden h-16 px-20 pt-10  lg:flex items-center justify-between ">
           <Link to="/">
             <div className="hidden lg:flex items-center   pt-5 gap-3 group cursor-pointer">
-              <img src={Logo} alt="Leco" className=" h-17 w-15 rounded-xl transition-transform duration-300 " />
+              <img src={Logo} alt="Leco" className=" h-16 w-14 rounded-xl transition-transform duration-300 " />
             </div>
-          </Link>
-
-          <div className="space-x-5 flex">
-
-            {/* Primary */}
-            <Link
-              to="/login"
-              className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
-                rounded-full font-semibold text-white shadow-lg 
-                hover:from-purple-600 hover:to-purple-800
-                hover:shadow-purple-500/40
-                hover:pr-6
-                transition-all duration-300
-                flex items-center overflow-hidden group"
-            >
-              Login
-              <span className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300">
-                →
-              </span>
-            </Link>
-
-            <Link
-              to="/register"
-              className="px-8 py-3 border border-white/50 text-white cursor-pointer
-                         hover:pr-6 rounded-full font-semibold hover:bg-white/10
-                        transition-all duration-300 overflow-hidden group flex items-center"
-            >
-              Register
-
-              <span className="w-0 opacity-0 group-hover:w-5 group-hover:opacity-100 group-hover:ml-2 transition-all duration-300">
-                →
-              </span>
-            </Link>
-
-          </div>
+          </Link>    
         </div>
       </header>
 

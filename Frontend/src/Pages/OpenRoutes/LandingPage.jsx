@@ -1,89 +1,147 @@
 import React from "react"
 import { Link } from 'react-router-dom'
-import laptop from '../../Images/hero.png'
+import laptop from '../../Images/lap.png'
+import phone from '../../Images/phone.png'
+import card from '../../Images/card.png'
 import { useEffect } from "react"
 import gsap from "gsap"
-// import laptop from '../../Images/laptop2.png'
+import bg from '../../Images/bg.png'
 import { useContext } from "react"
 import { AuthContext } from "../../context/AuthContext"
+import { Lock, UserPlus } from "lucide-react"
 
 
 function LandingPage() {
 
   const { user } = useContext(AuthContext)
 
-  useEffect(() => {
-    // only animate on desktop
-    if (window.innerWidth >= 1024) {
-      gsap.fromTo(
-        ".laptop",
-        { y: -30 },
-        { y: 30, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" }
-      )
-    }
-  }, [])
 
   return (
-    <section className="relative flex-1 flex items-center justify-center bg-[#0b0f19] text-white overflow-hidden">
-      {/* Sine wave background */}
-      <svg
-        className="hidden lg:block absolute -bottom-50 left-0 pointer-events-none w-full h-[1000px]"
-        viewBox="0 0 700 900"
-        preserveAspectRatio="xMinYMax meet"
-        fill="none"
-      >
-        <defs>
-          <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#7C5CFC" stopOpacity="0.04" />
-            <stop offset="100%" stopColor="#7C5CFC" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-black/50 z-10"></div>
 
-        <path d="M -10 900 L -10 480 C 40 480 60 320 120 280 C 180 240 200 400 260 380 C 320 360 340 180 420 200 C 500 220 520 380 600 360 L 700 340 L 700 900 Z"
-          fill="url(#waveGrad2)" />
-        <path d="M -10 900 L -10 520 C 50 520 70 360 130 320 C 190 280 210 440 270 420 C 330 400 350 220 430 240 C 510 260 520 420 600 400 L 700 380 L 700 900 Z"
-          fill="url(#waveGrad1)" />
-      </svg>
-      <div className="grid grid-cols-1 lg:grid-cols-2 z-20 items-center justify-center  px-8 lg:pl-32">
+      <img src={bg} alt="Background" className="absolute top-0 left-0 w-full h-full object-cover z-0 " />
+
+      <div className="grid grid-cols-1 lg:grid-cols-[50%_50%] z-20 pt-14 items-center w-full px-20">
 
         {/* LEFT SIDE */}
-        <div className="relative max-w-xl mt-10">
+        <div className="relative h-full  flex items-center justify-start ">
+          <div className="absolute -left-30 -bottom-10 z-0">
+            
+          </div>
+          {/* hero content */}
+          <div className="absolute space-y-14 w-[800px] left-0  z-30">
 
-
-          <div className="space-y-10">
-            <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10">
-              <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
-              <span className="text-xs text-purple-400 uppercase tracking-[0.2em]">
-                Administrative Control Platform
+            <h1
+              style={{ fontFamily: "'Orbitron', sans-serif" }}
+              className=" text-5xl lg:text-[70px] font-bold leading-[1.2] tracking-tight">
+              <span className="text-purple-600 block">
+                Admin Portal <br />
               </span>
+
+              <span className="text-white block">
+                For Workforce <br /> Management
+              </span>
+            </h1>
+
+            <div>
+              <div className="bg-purple-600 w-20 h-0.5 rounded-2xl"></div>
+
+              <div>
+                <p className="text-gray-200 mt-2 text-lg max-w-md">
+                  Seamlessly track attendance, manage shifts, monitor your workforce, and oversee primary substations, all in one powerful platform
+                </p>
+              </div>
             </div>
-            <div className=" space-y-7 pt-20 lg:pt-0">
 
-              <h1 className="text-5xl lg:text-7xl font-bold leading-[1.05]">
-                <span className="text-purple-600">Admin Portal For</span><span className="text-white"> Workforce Management</span>
-              </h1>
 
-              <p className="text-gray-400 text-lg max-w-lg leading-relaxed">
-                Track attendance, manage shifts, and monitor your employees in real time
-                with a powerful admin dashboard designed for modern teams.
-              </p>
+
+            <div className="flex gap-5">
+
+              {/* Login */}
+              <Link
+                to="/login"
+                className="
+      px-6 py-3
+      bg-gradient-to-r from-purple-600 to-purple-700
+      rounded-xl
+      font-bold
+      text-white
+      shadow-lg shadow-purple-900/30
+      border border-purple-400/20
+      hover:from-purple-500 hover:to-purple-700
+      hover:scale-105
+      transition-all duration-300
+      flex items-center gap-2
+    "
+              >
+                <Lock size={18} strokeWidth={2.5} />
+                LOGIN
+              </Link>
+
+              {/* Register */}
+              <Link
+                to="/register"
+                className="
+      px-6 py-3
+      bg-white/10
+      backdrop-blur-md
+      border border-white/20
+      rounded-xl
+      font-bold
+      text-white
+      hover:bg-white/20
+      hover:scale-105
+      transition-all duration-300
+      flex items-center gap-2
+    "
+              >
+                <UserPlus size={18} strokeWidth={2.5} />
+                REGISTER
+              </Link>
 
             </div>
+
           </div>
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="relative  w-full h-full flex justify-end items-center pb-5 lg:pb-0 pt-10 lg:pt-0">
+        <div className="relative w-[700px] h-[700px] flex justify-end items-center translate-x-10">
+          <div className="absolute -right-40 top-20 z-0">
+            <svg
+              className="w-[800px] h-[450px] opacity-20"
+              viewBox="0 0 654 401"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 356.747L44.0983 0H654L612.144 401L0 356.747Z"
+                fill="#C165EF"
+              />
+            </svg>
+          </div>
 
           <img
             src={laptop}
-            className="laptop  w-full"
+            className="absolute scale-125 right-10 "
           />
 
+          <img
+            src={phone}
+            className="absolute -left-30 bottom-52 h-80"
+            style={{
+              transform: `
+                perspective(1400px)
+                translateZ(300px)
+              `,
+              filter: "drop-shadow(0 40px 35px rgba(0,0,0,0.45))"
+            }}
+          />
+          <img
+            src={card}
+            className="absolute right-12 h-60 w-96 bottom-5"
+
+          />
         </div>
 
         {
