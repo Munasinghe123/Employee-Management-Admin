@@ -50,7 +50,7 @@ function Login() {
       <div
         className="relative grid grid-cols-10 z-20 max-w-3xl w-full
   rounded-3xl overflow-hidden
-  bg-[#0B1020]/15
+  bg-[#1A1F35]/70
   border border-purple-700/20
   shadow-[0_0_80px_rgba(0,0,0,0.45)]"
       >
@@ -112,9 +112,10 @@ function Login() {
           pl-12 py-12 pr-12 
     bg-[#111827]/80 text-white"
         >
-          <div className="absolute top-0 right-0 
+          <div className="absolute top-1/2 right-[-120px]  -translate-y-1/2 
             w-[500px] h-[500px] rounded-full 
             bg-violet-500/12 blur-3xl pointer-events-none" />
+
           <h1 className="text-4xl  font-semibold mb-8 tracking-tight">
             Login
           </h1>

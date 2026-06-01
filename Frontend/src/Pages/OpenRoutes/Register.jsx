@@ -122,18 +122,13 @@ function Register() {
                 <div
                     className="relative flex flex-col justify-center
     lg:col-span-6 p-8 lg:p-12
-    bg-[#1A1F35]/80 text-white overflow-hidden"
+    bg-[#1A1F35]/70 text-white overflow-hidden"
                 >
 
                     {/* Purple Glow */}
                     <div
                         className="absolute top-1/2 right-[-120px]
-      -translate-y-1/2
-      w-[280px] h-[280px]
-     
-      bg-violet-500/12 blur-3xl
-      pointer-events-none"
-                    />
+      -translate-y-1/2 w-[280px] h-[280px] bg-violet-500/12 blur-3xl pointer-events-none"/>
 
                     {/* Subtle Border Highlight */}
                     <div className="absolute inset-0 border border-white/[0.04]  pointer-events-none" />
