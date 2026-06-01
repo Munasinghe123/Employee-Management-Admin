@@ -33,10 +33,10 @@ function LandingPage() {
           <div className="absolute space-y-14 w-[800px] left-0  z-30">
 
             <h1
-              style={{ fontFamily: "'Orbitron', sans-serif" }}
-              className=" text-5xl lg:text-[70px] font-bold leading-[1.2] tracking-tight">
+              style={{ fontFamily: "'Inter', sans-serif" }}
+              className=" text-5xl lg:text-[80px] font-bold leading-[1.2] tracking-tight">
               <span className="text-purple-600 block">
-                Admin Portal <br />
+                Admin Portal
               </span>
 
               <span className="text-white block">
@@ -109,7 +109,7 @@ function LandingPage() {
         <div className="relative w-[700px] h-[700px] flex justify-end items-center translate-x-10">
           <div className="absolute -right-40 top-20 z-0">
             <svg
-              className="w-[800px] h-[450px] opacity-20"
+              className="w-[900px] h-[450px] opacity-20"
               viewBox="0 0 654 401"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
