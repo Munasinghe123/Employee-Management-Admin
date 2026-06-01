@@ -18,7 +18,7 @@ function LandingPage() {
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-black/50 z-10"></div>
+      <div className="absolute inset-0 bg-black/60 z-10"></div>
 
       <img src={bg} alt="Background" className="absolute top-0 left-0 w-full h-full object-cover z-0 " />
 
@@ -29,13 +29,13 @@ function LandingPage() {
           <div className="absolute -left-30 -bottom-10 z-0">
             
           </div>
-          {/* hero content */}
+          
           <div className="absolute space-y-14 w-[800px] left-0  z-30">
 
             <h1
               style={{ fontFamily: "'Inter', sans-serif" }}
               className=" text-5xl lg:text-[80px] font-bold leading-[1.2] tracking-tight">
-              <span className="text-purple-600 block">
+              <span className="text-[#7C3AED] block">
                 Admin Portal
               </span>
 
@@ -45,7 +45,7 @@ function LandingPage() {
             </h1>
 
             <div>
-              <div className="bg-purple-600 w-20 h-0.5 rounded-2xl"></div>
+              <div className="bg-[#7C3AED] w-20 h-0.5 rounded-2xl"></div>
 
               <div>
                 <p className="text-gray-200 mt-2 text-lg max-w-md">
@@ -62,14 +62,12 @@ function LandingPage() {
               <Link
                 to="/login"
                 className="
-      px-6 py-3
-      bg-gradient-to-r from-purple-600 to-purple-700
+      px-6 py-3 bg-[#7C3AED]
       rounded-xl
       font-bold
       text-white
       shadow-lg shadow-purple-900/30
       border border-purple-400/20
-      hover:from-purple-500 hover:to-purple-700
       hover:scale-105
       transition-all duration-300
       flex items-center gap-2
@@ -149,10 +147,10 @@ function LandingPage() {
             <div className="absolute top-5 right-5">
               <Link
                 to="/dashboard/attendance"
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 cursor-pointer
+                className="px-8 py-3 bg-gradient-to-r from-[#7C3AED] to-[#5B21B6] cursor-pointer
                 rounded-full font-semibold text-white shadow-lg 
-                hover:from-purple-600 hover:to-purple-800
-                hover:shadow-purple-500/40
+                hover:from-[#7C3AED] hover:to-[#5B21B6]
+                hover:shadow-[#7C3AED]/40
                 flex items-center overflow-hidden">
                 Dashboard
               </Link>

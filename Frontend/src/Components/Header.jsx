@@ -48,7 +48,7 @@ function Header() {
         <div className="hidden h-16 px-20 pt-10  lg:flex items-center justify-between ">
           <Link to="/">
             <div className="hidden lg:flex items-center   pt-5 gap-3 group cursor-pointer">
-              <img src={Logo} alt="Leco" className=" h-16 w-14 rounded-xl transition-transform duration-300 " />
+              <img src={Logo} alt="Leco" className=" h-16 w-12 rounded-xl transition-transform duration-300 " />
             </div>
           </Link>    
         </div>
