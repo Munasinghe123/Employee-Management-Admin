@@ -58,7 +58,7 @@ function Login() {
         {/* LEFT PANEL */}
         <div className="relative col-span-4 overflow-hidden">
 
-         
+
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-[#050816]/50" />
@@ -72,22 +72,22 @@ function Login() {
       px-8 py-12 text-center"
           >
 
-           <div
-  className="w-20 h-20 rounded-full
+            <div
+              className="w-20 h-20 rounded-full
   bg-white/[0.04]
   border border-white/10
   backdrop-blur-xl
   flex items-center justify-center
   shadow-[0_0_50px_rgba(139,92,246,0.15)]"
->
-  <ShieldUser
-    size={38}
-    strokeWidth={2}
-    className="text-violet-300"
-  />
-</div>
+            >
+              <ShieldUser
+                size={38}
+                strokeWidth={2}
+                className="text-violet-300"
+              />
+            </div>
 
-          
+
             <div className="mt-8 space-y-4">
 
               <h2 className="text-3xl font-semibold text-white tracking-tight">
@@ -122,7 +122,7 @@ function Login() {
 
           <div className="flex flex-col gap-6 w-full max-w-md">
 
-           
+
             <div>
               <label className="block mb-2 text-sm text-white/60">
                 Employee ID
@@ -152,7 +152,7 @@ function Login() {
               </div>
             </div>
 
-           
+
             <div>
               <label className="block text-sm text-white/60 mb-2">
                 Password
@@ -182,7 +182,7 @@ function Login() {
               </div>
             </div>
 
-           
+
             <button
               className="mt-2 py-3 rounded-xl
         bg-violet-500 font-bold
@@ -194,6 +194,18 @@ function Login() {
             >
               LOGIN
             </button>
+
+            <div className="flex space-x-2">
+              <p className="text-sm text-white/60 mb-2">
+                Don't have an account ? Click here to
+              </p>
+
+              <Link to="/register" className="text-sm underline text-violet-400 hover:underline">
+                Register
+              </Link>
+            </div>
+
+
 
           </div>
         </div>

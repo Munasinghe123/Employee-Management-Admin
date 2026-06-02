@@ -48,7 +48,7 @@ function Register() {
     }
 
     return (
-        <div className="relative flex-1 max-h-screen pt-16  py-20 px-10 lg:px-20 w-full flex items-center justify-center bg-[#0b0f19] overflow-hidden">
+        <div className="relative flex-1 max-h-screen pt-16  py-10 px-10 lg:px-20 w-full flex items-center justify-center bg-[#0b0f19] overflow-hidden">
             <div className="absolute inset-0 bg-black/60 z-10"></div>
             <img src={bg} alt="Background" className="absolute top-0 left-0 w-full h-full object-cover z-0 " />
             {/* Register Card */}
@@ -300,6 +300,17 @@ function Register() {
                         </button>
 
                     </div>
+
+                    <div className="flex space-x-2 mt-6">
+                        <p className="text-sm text-white/60 mb-2">
+                            Already have an account ? Click here to
+                        </p>
+
+                        <Link to="/login" className="text-sm underline text-violet-400 hover:underline">
+                            Login
+                        </Link>
+                    </div>
+
                 </div>
             </form>
 
