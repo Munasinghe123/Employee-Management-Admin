@@ -6,7 +6,7 @@ import Header from './Components/Header';
 import Landing from './Pages/OpenRoutes/LandingPage';
 import Login from './Pages/OpenRoutes/Login';
 import Register from './Pages/OpenRoutes/Register';
-import Footer from './Components/Footer';
+
 
 import ProtectedRoute from './Pages/ProtectedRoutes/ProtectedRoute';
 
@@ -71,7 +71,7 @@ function App() {
         </Routes>
       </main>
 
-      {!user && <Footer />}
+     
 
     </div>
   );
