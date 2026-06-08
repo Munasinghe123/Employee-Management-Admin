@@ -65,20 +65,40 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        console.log("endpoint hit");
-        const { name, email, password, employeeId, role } = req.body;
+        console.log("register endpoint hit");
+        const { name, email, password, employeeId} = req.body;
 
-        console.log(req.body);
+        const role="admin"
+
+        // console.log(req.body);
 
         if (!name || !password || !employeeId || !role || !email) {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
-        const [existingUser] = await db.query('SELECT employeeId FROM admin WHERE employeeId=?', [employeeId]);
+        const [existingUser] = await db.query('SELECT employeeId,email FROM admin WHERE employeeId=? OR email=?', [employeeId, email]);
+        console.log("existingUser:", existingUser);
+
+        const error = {}
+
+        existingUser.forEach(user => {
+
+            if (user.email === email) {
+                error.email = "Email already exixts"
+            }
+
+            if (user.employeeId === employeeId) {
+                error.employeeId = "Employee Id already exists"
+            }
+        });
+        if (Object.keys(error).length > 0) {
+            return res.status(409).json({ error });
+        }
 
         if (existingUser.length > 0) {
             return res.status(409).json({ message: 'User already exists' });
         }
+
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -97,9 +117,9 @@ const register = async (req, res) => {
 
 const checkToken = async (req, res) => {
     try {
-        console.log("COOKIES:", req.cookies);
+        // console.log("COOKIES:", req.cookies);
         const accessToken = req.cookies.accessToken;
-        console.log("token check, ", accessToken);
+        // console.log("token check, ", accessToken);
         if (!accessToken) return res.status(401).json({ message: "No token found" });
 
         const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);

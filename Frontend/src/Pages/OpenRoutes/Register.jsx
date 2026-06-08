@@ -24,10 +24,13 @@ function Register() {
     const [email, setEmail] = useState("");
     const [employeeId, setEmployeeId] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [errors, setErrors] = useState({});
 
     const submitForm = async (e) => {
 
         e.preventDefault();
+
+        setErrors({});
 
         if (password !== confirmPassword) {
             alert("Passwords do not match");
@@ -36,14 +39,14 @@ function Register() {
 
         try {
             const response = await axios.post("http://localhost:7001/auth/register",
-                { name, password, email, employeeId, role: "admin" }
+                { name, password, email, employeeId }
             )
 
             console.log("register response", response.data);
 
             navigate("/login");
         } catch (error) {
-            console.log(error);
+            setErrors(error.response.data.error)
         }
     }
 
@@ -167,6 +170,7 @@ function Register() {
                                             focus:border-violet-400/40
                                             transition-all duration-300"
                                     />
+
                                 </div>
                             </div>
 
@@ -194,6 +198,14 @@ function Register() {
                                             focus:border-violet-400/40
                                             transition-all duration-300"
                                     />
+
+
+                                    {errors.email && (
+                                        <p className="text-red-400 text-sm mt-1">
+                                            {errors.email}
+                                        </p>
+                                    )}
+
                                 </div>
 
 
@@ -223,6 +235,11 @@ function Register() {
                                         focus:border-violet-400/40
                                         transition-all duration-300"
                                     />
+                                    {errors.employeeId && (
+                                        <p className="text-red-400 text-sm mt-1">
+                                            {errors.employeeId}
+                                        </p>
+                                    )}
                                 </div>
 
                             </div>
