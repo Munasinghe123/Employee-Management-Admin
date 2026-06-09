@@ -66,9 +66,9 @@ const login = async (req, res) => {
 const register = async (req, res) => {
     try {
         console.log("register endpoint hit");
-        const { name, email, password, employeeId} = req.body;
+        const { name, email, password, employeeId } = req.body;
 
-        const role="admin"
+        const role = "admin"
 
         // console.log(req.body);
 
@@ -95,9 +95,9 @@ const register = async (req, res) => {
             return res.status(409).json({ error });
         }
 
-        if (existingUser.length > 0) {
-            return res.status(409).json({ message: 'User already exists' });
-        }
+        // if (existingUser.length > 0) {
+        //     return res.status(409).json({ message: 'User already exists' });
+        // }
 
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -145,16 +145,20 @@ const editAccount = async (req, res) => {
     const { name, password } = req.body
 
     try {
-        const updateData = { name, userName }
 
         if (password) {
-            updateData.password = password
-        }
+            const hashedPassword = await bcrypt.hash(password, 10);
 
-        await db.query(
-            "UPDATE employee SET name=?, userName=?, password=? WHERE employeeId=?",
-            [name, userName, password || null, id]
-        )
+            await db.query(
+                "UPDATE admin SET password=? WHERE employeeId=?",
+                [hashedPassword, id]
+            )
+        } else{
+            await db.query(
+                "UPDATE admin SET name=? WHERE employeeId=?",
+                [name, id]
+            )
+        }
 
         res.json({ message: "Updated successfully" })
 

@@ -54,31 +54,6 @@ export default function Employees() {
     fetchDetails()
   }, [clickedEmployee])
 
-  useEffect(() => {
-    const fetchSearchedEmployees = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:7001/admin/search",
-          {
-            params: { employeeId: searchTerm },
-            withCredentials: true
-          }
-        );
-
-        setEmployees(res.data.data);
-
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    if (searchTerm.trim() === "") {
-      fetchEmployees(); 
-      return;
-    }
-
-    fetchSearchedEmployees();
-
-  }, [searchTerm]);
 
   const fetchEmployees = async () => {
     const res = await axios.get("http://localhost:7001/admin/all-employees", {

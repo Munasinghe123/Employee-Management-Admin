@@ -303,7 +303,7 @@ const searchEmployees = async (req, res) => {
         userName,
         role,
         substationId
-      FROM admin
+      FROM employee
       WHERE employeeId LIKE ?
       `,
       [`%${employeeId.trim()}%`]

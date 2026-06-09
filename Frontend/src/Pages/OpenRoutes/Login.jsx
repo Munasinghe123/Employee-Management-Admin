@@ -19,6 +19,7 @@ function Login() {
   const navigate = useNavigate();
   const [employeeId, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [error,setError] = useState("")
 
   const loginUser = async (e) => {
 
@@ -34,7 +35,8 @@ function Login() {
       }
 
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
+      setError(error.response.data.message);
     }
 
   }
@@ -149,6 +151,9 @@ function Login() {
             focus:border-violet-400/40
             transition-all duration-300"
                 />
+                {error && (
+                  <p className="text-red-400 text-sm mt-1">{error}</p>
+                )}
               </div>
             </div>
 
